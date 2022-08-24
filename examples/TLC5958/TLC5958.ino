@@ -96,11 +96,10 @@ void setup() {
 
 unsigned long last = 0;
 void loop() {
-    /*if(millis() - last > 500) {
+    if(millis() - last > 500) {
         demo(1);
         last = millis();
-    }*/
-    demo(2);
+    }
     // Send the required GS clock pulses so the driver can update the LED PWMs
     leds.send_gs_clk();
 }
