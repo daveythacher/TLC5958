@@ -180,7 +180,7 @@ void TLC5958::_send(uint64_t data, uint8_t bits, uint8_t latch_clks) {
 void TLC5958::_print64hex(uint64_t to_print) {
     uint32_t tmp1 = (to_print >> 32) & 0xFFFF;
     uint32_t tmp2 = (to_print);
-    Serial.printf("0x%04X%08X\r\n", tmp1, tmp2);
+    //Serial.printf("0x%04X%08X\r\n", tmp1, tmp2);
 }
 
 // Tunable delays to allow for GPIO rise time
