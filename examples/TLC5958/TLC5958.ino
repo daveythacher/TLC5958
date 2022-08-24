@@ -13,6 +13,10 @@ uint8_t led_index_map[NUM_ROWS*NUM_COLS] = {
     58, 50, 57, 49, 56, 48, 63, 55, 62, 54, 61, 53, 60, 52, 59, 51
 };
 
+void __digitalWrite(uint8_t a, uint8_t b) {
+  digitalWrite(a, b);
+}
+
 // GPIO pin setup
 void gpio_init(void) {
     pinMode(ROWDRV_A, OUTPUT);
@@ -24,27 +28,27 @@ void gpio_init(void) {
     pinMode(LAT, OUTPUT);
     pinMode(SIN, OUTPUT);
 
-    digitalWrite(SCLK, LOW);
-    digitalWrite(GCLK, LOW);
-    digitalWrite(LAT, LOW);
-    digitalWrite(SIN, LOW);
-    digitalWrite(ROWDRV_A, LOW);
-    digitalWrite(ROWDRV_B, LOW);
-    digitalWrite(ROWDRV_C, LOW);
-    digitalWrite(ROWDRV_EN, LOW);
+    __digitalWrite(SCLK, LOW);
+    __digitalWrite(GCLK, LOW);
+    __digitalWrite(LAT, LOW);
+    __digitalWrite(SIN, LOW);
+    __digitalWrite(ROWDRV_A, LOW);
+    __digitalWrite(ROWDRV_B, LOW);
+    __digitalWrite(ROWDRV_C, LOW);
+    __digitalWrite(ROWDRV_EN, LOW);
 }
 
 // Example row scanning function.
 // Takes a single integer argument which sets the currently active row.
 const uint8_t row_index[] = {ROWDRV_A, ROWDRV_B, ROWDRV_C};
 void set_row(uint8_t row) {
-    digitalWrite(ROWDRV_EN, LOW);
+    __digitalWrite(ROWDRV_EN, LOW);
 
     for (int i=0; i<3; i++) {
-        digitalWrite(row_index[i], (row >> i) & 0x01);
+        __digitalWrite(row_index[i], (row >> i) & 0x01);
     }
     delayMicroseconds(1);
-    digitalWrite(ROWDRV_EN, HIGH);
+    __digitalWrite(ROWDRV_EN, HIGH);
 }
 
 // Simple demo LED animation modes
@@ -68,10 +72,6 @@ void demo(uint8_t mode) {
     leds.vsync();
 }
 
-void test(uint8_t a, uint8_t b) {
-  digitalWrite(a, b);
-}
-
 void setup() {
     Serial.begin(9600);
     delay(2000);
@@ -81,7 +81,7 @@ void setup() {
     // Set GPIO pins 
     leds.set_pins(SCLK, SIN, GCLK, LAT);
     // Set the GPIO handler
-    leds.map_gpio_handler(test);
+    leds.map_gpio_handler(__digitalWrite);
     // Set the row handler
     leds.map_row_handler(set_row);
     // Optional: set an index map if channels are used out-of-order
@@ -96,10 +96,11 @@ void setup() {
 
 unsigned long last = 0;
 void loop() {
-    if(millis() - last > 500) {
+    /*if(millis() - last > 500) {
         demo(1);
         last = millis();
-    }
+    }*/
+    demo(2);
     // Send the required GS clock pulses so the driver can update the LED PWMs
     leds.send_gs_clk();
 }
