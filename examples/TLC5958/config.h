@@ -12,7 +12,6 @@
 #define LAT         15
 #define SIN         16
 
-#define GS_DUAL_EDGE    1
 #define NUM_ROWS        4
 #define NUM_COLS        16
 
