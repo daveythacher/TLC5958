@@ -12,7 +12,7 @@ public:
     void
     vsync(void),
     send_gs_data(void),
-    configure_FC1(void),
+    configure_FC1(uint16_t red = 511, uint16_t green = 215, uint16_t blue = 180, uint16_t global = 2),
     configure_FC2(void),
     send_gs_clk(void),
 

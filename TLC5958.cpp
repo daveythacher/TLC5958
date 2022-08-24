@@ -29,7 +29,7 @@ void TLC5958::send_gs_data(void) {
     }
 }
 
-void TLC5958::configure_FC1(void) {
+void TLC5958::configure_FC1(uint16_t red, uint16_t green, uint16_t blue, uint16_t global) {
     _fc_write_en();
     uint64_t FC1Config = 0;
 
@@ -42,10 +42,10 @@ void TLC5958::configure_FC1(void) {
     FC1Config |= FC1_PRE_CHARGE(PRE_CHARGE_DIS);
     FC1Config |= FC1_PRE_CHG_MODE(PRE_CHG_MODE_DEFAULT);
     FC1Config |= FC1_UNIFORMITY(UNIF_ENCHANCE_EN);
-    FC1Config |= FC1_CCB(180LL);
-    FC1Config |= FC1_CCG(215LL);
-    FC1Config |= FC1_CCR(511LL);
-    FC1Config |= FC1_BC(0x2LL);
+    FC1Config |= FC1_CCB((long long) blue);
+    FC1Config |= FC1_CCG((long long) green);
+    FC1Config |= FC1_CCR((long long) red);
+    FC1Config |= FC1_BC((long long) global);
 
     _send(FC1Config, FCx_DATA_BITS, FCx_LAT_CLKS);
     //_print64hex(FC1Config);
